@@ -43,7 +43,7 @@ class TypingTestUI(tk.Tk):
         # Passage Display
         self.passage_label = tk.Label(self.top_frame, text="Type the following passage:", font=FONT_MAIN, bg=BG_COLOR, fg=TEXT_COLOR)
         self.passage_label.pack(pady=10)
-        self.passage_text = tk.Label(self.top_frame, text=self.passages.get_passage(), font=FONT_MAIN, bg=BG_COLOR, fg=TEXT_COLOR)
+        self.passage_text = tk.Label(self.top_frame, text="Press start to get a passage.", font=FONT_MAIN, bg=BG_COLOR, fg=TEXT_COLOR)
         self.passage_text.pack(pady=5)
 
         # Typing Area
@@ -69,6 +69,9 @@ class TypingTestUI(tk.Tk):
     def change_passage(self):
         self.passages.get_passage()
         self.passage_text.config(text=self.passages.get_passage())
+    
+    def reset_passage_text(self):
+        self.passage_text.config(text="Press start to get a passage.")
 
     def clear_typing_box(self):
         self.text_area.delete('1.0', tk.END)

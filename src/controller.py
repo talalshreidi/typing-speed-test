@@ -10,12 +10,14 @@ class TypeTestingController():
     def start_test(self):
         self.ui.clear_typing_box()
         self.logic.reset_stats()
+        self.ui.change_passage()
         self.countdown()
 
     def reset_test(self):
         self.logic.reset_stats()
         self.ui.clear_typing_box()
         self.stop_timer()
+        self.ui.reset_passage_text()
 
     def stop_timer(self):
         if self.timer_id:
