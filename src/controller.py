@@ -35,16 +35,23 @@ class TypeTestingController():
         user_input = self.ui.text_area.get('1.0', tk.END).strip()
         target_text = self.passages.get_current_passage()
 
+
+        self.logic.update_live_stats(user_input, target_text)
+
+        self.ui.update_status_text()
+
         for i in range(min(len(user_input), len(target_text))):
+            start_pos = f"1.{i}"
+            end_pos = f"1.{i+1}"
+            
             if user_input[i] == target_text[i]:
-                tag_name = f"char_{i}"
-                color = "green"
-                self.ui.text_area.tag_configure(tag_name, foreground=color)
-                self.ui.text_area.tag_add(tag_name, f"1.0+{i}c")
+                self.ui.text_area.tag_add("correct", start_pos, end_pos)
             else:
-                color = "red"
-                self.ui.text_area.tag_configure(tag_name, foreground=color)
-                self.ui.text_area.tag_add(tag_name, f"1.0+{i}c")
+                self.ui.text_area.tag_add("incorrect", start_pos, end_pos)
+
+        # Configure tag styles
+        self.ui.text_area.tag_configure("correct", foreground="green")
+        self.ui.text_area.tag_configure("incorrect", foreground="red", background="lightcoral")
 
 
     def countdown(self):
