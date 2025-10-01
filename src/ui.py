@@ -50,6 +50,7 @@ class TypingTestUI(tk.Tk):
 
         self.text_area = tk.Text(self.middle_frame, height=10, font=FONT_MAIN, wrap=tk.WORD)
         self.text_area.pack(pady=10, padx=10, fill=tk.BOTH, expand=True)
+        self.text_area.bind("<KeyRelease>", self.controller.check_user_words)
 
         # Status Bar
         self.status_label = tk.Label(self.bottom_frame, text=f"Timer: {self.logic.time_left} | WPM: {self.logic.words_per_min} | Accuracy: {self.logic.accuracy}%", font=FONT_MAIN, bg=BG_COLOR, fg=TEXT_COLOR)
@@ -70,6 +71,12 @@ class TypingTestUI(tk.Tk):
         self.passages.get_passage()
         self.passage_text.config(text=self.passages.get_passage())
     
+    def set_test_state(self, state):
+        if state == "running":
+            self.start_button.config(state=tk.DISABLED)
+        elif state == "stopped":
+            self.start_button.config(state=tk.NORMAL)
+
     def reset_passage_text(self):
         self.passage_text.config(text="Press start to get a passage.")
 
