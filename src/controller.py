@@ -32,13 +32,17 @@ class TypeTestingController():
         if not self.logic.is_active:
             return
         
-        user_input = self.ui.text_area.get('1.0', tk.END).strip()
+        current_text = self.ui.text_area.get('1.0', tk.END).strip()
         target_text = self.passages.get_current_passage()
 
+        self.logic.track_keystroke(event, current_text, target_text)
+
+        user_input = self.ui.text_area.get('1.0', tk.END).strip()
 
         self.logic.update_live_stats(user_input, target_text)
-
         self.ui.update_status_text()
+
+        self.ui.text_area.tag_delete("correct", "incorrect")
 
         for i in range(min(len(user_input), len(target_text))):
             start_pos = f"1.{i}"
@@ -48,6 +52,14 @@ class TypeTestingController():
                 self.ui.text_area.tag_add("correct", start_pos, end_pos)
             else:
                 self.ui.text_area.tag_add("incorrect", start_pos, end_pos)
+
+        if len(user_input) == len(target_text):
+            self.logic.is_active = False
+            results = self.logic.get_detailed_stats()
+            self.logic.reset_stats()
+            self.reset_test()
+            
+            print(results)
 
         # Configure tag styles
         self.ui.text_area.tag_configure("correct", foreground="green")

@@ -8,6 +8,12 @@ class TypeTestingLogic():
         self.is_active = False
         self.start_time = None
 
+        # Track all typing activity
+        self.total_chars_typed = 0
+        self.correct_chars = 0
+        self.incorrect_chars = 0
+        self.backspaces = 0
+
 
 
     def reset_stats(self):
@@ -17,6 +23,12 @@ class TypeTestingLogic():
         self.time_left = 60
         self.is_active = False
         self.start_time = None
+
+        
+        self.total_chars_typed = 0    
+        self.correct_chars = 0          
+        self.incorrect_chars = 0       
+        self.backspaces = 0             
     
     def start_test(self):
         self.is_active = True
@@ -38,41 +50,59 @@ class TypeTestingLogic():
 
         return int(words_typed / elapsed_time)
 
+    def track_keystroke(self, event, current_text, target_text):
+        """Track individual keystrokes for accurate statistics"""
+        if not self.is_active:
+            return
+            
+        key = event.keysym
+
+        if key == 'BackSpace':
+            self.backspaces += 1
+            self.total_chars_typed += 1
+        elif len(key) == 1:  
+            self.total_chars_typed += 1
+         
+            cursor_pos = len(current_text) - 1  
+            
+            if cursor_pos >= 0 and cursor_pos < len(target_text) and current_text[cursor_pos] == target_text[cursor_pos]:
+                self.correct_chars += 1
+            else:
+                self.incorrect_chars += 1
 
 
-    def calculate_accuracy(self, target_text, user_input):
-        """
-        Calculates the typing accuracy based on target text and user input.
-
-        Args:
-            target_text (str): The text the user was supposed to type.
-            user_input (str): The actual text entered by the user.
-
-        Returns:
-            float: The typing accuracy as a percentage.
-        """
-        if not user_input or not target_text:
+    def calculate_accuracy(self):
+        """Calculate accuracy based on all keystrokes"""
+        if self.total_chars_typed == 0:
             return 100.0
-
-        correct_chars = 0
-        total_chars = min(len(user_input), len(target_text))
-
-        for i in range(total_chars):
-            if target_text[i] == user_input[i]:
-                correct_chars += 1
-
-        if len(target_text) == 0:
-            return 0.0
-        else:
-            return round((correct_chars / len(user_input)) * 100, 1)
+        
+        # Don't count backspaces in accuracy calculation
+        actual_typing_chars = self.total_chars_typed - self.backspaces
+        if actual_typing_chars == 0:
+            return 100.0
+        
+        accuracy = (self.correct_chars / actual_typing_chars) * 100
+        return round(accuracy, 1)
         
 
     def update_live_stats(self, user_input, target_text):
         if self.is_active:
            self.words_per_min =  self.calculate_wpm(user_input)
-           self.accuracy = self.calculate_accuracy(target_text, user_input)
+           self.accuracy = self.calculate_accuracy()
 
 
 
     def end_test(self):
         self.is_active = False
+
+
+    def get_detailed_stats(self):
+        """Return detailed statistics for end-of-test summary"""
+        return {
+            'wpm': self.words_per_min,
+            'accuracy': self.accuracy,
+            'total_keystrokes': self.total_chars_typed,
+            'correct_keystrokes': self.correct_chars,
+            'incorrect_keystrokes': self.incorrect_chars,
+            'backspaces': self.backspaces
+        }

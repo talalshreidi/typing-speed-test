@@ -68,8 +68,8 @@ class TypingTestUI(tk.Tk):
         self.change_passage_button.pack(side=tk.LEFT, padx=10, pady=10, anchor="center")
 
     def change_passage(self):
-        self.passages.get_passage()
-        self.passage_text.config(text=self.passages.get_passage())
+        new_passage = self.passages.get_passage()
+        self.passage_text.config(text=new_passage)
     
     def set_test_state(self, state):
         if state == "running":
