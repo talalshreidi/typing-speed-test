@@ -10,6 +10,23 @@ A GUI application to test and improve typing speed built with Python's Tkinter l
 - **Multiple test passages** with random selection
 - **60-second timed tests** with countdown timer
 
+## Showcase
+
+**Main UI**
+
+<img width="792" height="624" alt="typingtestui" src="https://github.com/user-attachments/assets/d1cfd7e4-d1ad-4fde-8151-1a544f4f89ef" />
+
+**During Test UI**
+
+<img width="797" height="628" alt="duringtypingtestui" src="https://github.com/user-attachments/assets/80d9162c-cfa6-4c0c-a00b-bc96e241951c" />
+
+**Results UI**
+
+<img width="396" height="375" alt="typingtestresultsui" src="https://github.com/user-attachments/assets/bd2bf7d0-c3c6-4599-93c1-c4dc99bdcc89" />
+
+
+
+
 ## Installation
 
 1. Clone the repository:
