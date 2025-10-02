@@ -58,8 +58,7 @@ class TypeTestingController():
             results = self.logic.get_detailed_stats()
             self.logic.reset_stats()
             self.reset_test()
-            
-            print(results)
+            self.ui.create_pop_up(results)
 
         # Configure tag styles
         self.ui.text_area.tag_configure("correct", foreground="green")

@@ -86,5 +86,59 @@ class TypingTestUI(tk.Tk):
     def update_status_text(self):
         self.status_label.config(text=f"Timer: {self.logic.time_left} | WPM: {self.logic.words_per_min} | Accuracy: {self.logic.accuracy}%")
 
+    def create_pop_up(self, text):
+        popup = tk.Toplevel(self)
+        popup.title("Test Results")
+        popup.geometry("400x350")
+        popup.configure(bg="#f0f0f0")
+        popup.resizable(False, False)
+        
+        # Center the popup
+        popup.transient(self)
+        popup.grab_set()
+
+        # Main container
+        main_frame = tk.Frame(popup, bg="#f0f0f0")
+        main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        
+        # Title
+        title_label = tk.Label(main_frame, text="🎉 Test Complete!", 
+                              font=("Helvetica", 18, "bold"), 
+                              bg="#f0f0f0", fg="#2c3e50")
+        title_label.pack(pady=(0, 20))
+        
+        # Results frame 
+        results_frame = tk.Frame(main_frame, bg="#ffffff", relief=tk.RAISED, bd=1)
+        results_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        
+        # Individual stat rows
+        stats = [
+            ("Words Per Minute", f"{text['wpm']}", "#e74c3c"),
+            ("Accuracy", f"{text['accuracy']}%", "#27ae60"),
+            ("Total Characters", f"{text['total_keystrokes']}", "#3498db"),
+            ("Correct Characters", f"{text['correct_keystrokes']}", "#27ae60"),
+            ("Incorrect Characters", f"{text['incorrect_keystrokes']}", "#e74c3c"),
+            ("Backspaces Used", f"{text['backspaces']}", "#f39c12")
+        ]
+        
+        for i, (label, value, color) in enumerate(stats):
+            row_frame = tk.Frame(results_frame, bg="#ffffff")
+            row_frame.pack(fill=tk.X, padx=15, pady=8)
+            
+            # Label
+            label_widget = tk.Label(row_frame, text=f"{label}:", 
+                                   font=("Helvetica", 11), 
+                                   bg="#ffffff", fg="#2c3e50",
+                                   anchor="w")
+            label_widget.pack(side=tk.LEFT)
+            
+            # Value
+            value_widget = tk.Label(row_frame, text=value, 
+                                   font=("Helvetica", 11, "bold"), 
+                                   bg="#ffffff", fg=color,
+                                   anchor="e")
+            value_widget.pack(side=tk.RIGHT)
+        
+
     
             
